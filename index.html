@@ -77,14 +77,14 @@
 <!-- 定义一个模板,然后再填充 -->
 <script type="text/html" id="robot">
     <div class="robot">
-        <img src="./imgs/timg.jpg" alt="" class="sister">
+        <img src="./imgs/sister.jpg" alt="" class="sister">
         <input v-model="message" type="text" placeholder="你想跟姐姐聊什么" @keyup.enter="send">
         <button @click="send">发送</button>
         <transition-group name="list" tag="ul">
             <li @dblclick="remove(index)" v-for="(item, index) in messageList" :key="item.info">
                 <!-- 因为指定了消息内容在info里面存储,所以需要循环点出info才可以正常显示信息 -->
                 <p>
-                    <img class="head" :src="item.isMe?'./imgs/下载.jpg':'./imgs/lm_17.jpg'" alt="">:{{item.info}}</p>
+                    <img class="head" :src="item.isMe?'./imgs/GG.jpg':'./imgs/lm_17.jpg'" alt="">:{{item.info}}</p>
             </li>
         </transition-group>
     </div>
