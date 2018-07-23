@@ -1,29 +1,135 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        #box{
-            background-color: yellow;
+        body {
+            background: url('./imgs/bg.gif') repeat-x;
+            overflow-y: scroll;
+        }
+
+        .sister {
             width: 100px;
-            height: 100px;
-            text-align: center;
-            line-height: 100px;
+            border-radius: 50%;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .head {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px black;
+        }
+
+        .list-item {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .list-enter-active,
+        .list-leave-active {
+            transition: all 1s;
+        }
+
+        .list-enter,
+        .list-leave-to
+        /* .list-leave-active for below version 2.1.8 */
+
+            {
+            opacity: 0;
+            transform: translateX(30px);
         }
     </style>
 </head>
+
 <body>
-    <div id="box">请点我</div>
+    <div id="app">
+        <chatroom></chatroom>
+    </div>
 </body>
+
 </html>
+<script src="./lib/vue.js"></script>
+<script src="./lib/axios.min.js"></script>
+<!-- 定义一个模板,然后再填充 -->
+<script type="text/html" id="robot">
+    <div class="robot">
+        <img src="./imgs/timg.jpg" alt="" class="sister">
+        <input v-model="message" type="text" placeholder="你想跟姐姐聊什么" @keyup.enter="send">
+        <button @click="send">发送</button>
+        <transition-group name="list" tag="ul">
+            <li @dblclick="remove(index)" v-for="(item, index) in messageList" :key="item">
+                <!-- 因为指定了消息内容在info里面存储,所以需要循环点出info才可以正常显示信息 -->
+                <p>
+                    <img class="head" :src="item.isMe?'./imgs/下载.jpg':'./imgs/lm_17.jpg'" alt="">:{{item.info}}</p>
+            </li>
+        </transition-group>
+    </div>
+</script>
 <script>
-    var box = document.getElementById('box');
-    console.log(box);
-    
-    box.onclick=function () { 
-        box.style.backgroundColor = "red";
-     }
+    // 需求
+    //     点击回车
+    //         获取自己的信息
+    //         调用接口 获取返回的内容
+    // 内容格式为
+    // [
+    //     {info:'你好',isMe:true};
+    // ]
+    //引用组件,指定HTML渲染名为chatroom
+    Vue.component('chatroom', {
+        template: '#robot',
+        // data给一个函数来获取数据
+        data: function () {
+            //返回数据
+            return {
+                message: '',
+                messageList: []
+            }
+        },
+        methods: {
+            send() {
+                //首先把自己的信息加到数组中去.
+                this.messageList.push({
+                    info: this.message,
+                    isMe: true
+                });
+                //接口调用,
+                //格式化数据 axios 默认会把传入的js对象格式化为json字符串 直接发送会造成格式不正确
+                // 把要发送的数据都赋值给一个常量params
+                const params = new URLSearchParams();
+                // 要发送的key和info聊天信息都封装到params里面
+                params.append('key', '7fca2bde1fad4c7c80f6bff5fe8e024a');
+                params.append('info', this.message);
+                // 调用axios的post方法,直接发送之前封装好的数据
+                axios
+                    .post('http://www.tuling123.com/openapi/api', params)
+                    .then((response) => {
+                        console.log(response.data);
+                        this.messageList.push({
+                            info: response.data.text,
+                            isMe: false
+                        })
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            remove(index) {
+                this.messageList.splice(index, 1);
+            }
+        }
+
+
+    })
+    //实例化vue
+    let app = new Vue({
+        el: '#app'
+    })
 </script>
