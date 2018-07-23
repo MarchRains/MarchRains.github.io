@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>Document</title>
     <style>
         body {
@@ -47,10 +46,25 @@
             opacity: 0;
             transform: translateX(30px);
         }
+
+        h1 {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%);
+            top: 10px;  
+            font-size: 26px;
+            color: rgb(241, 65, 153);
+        }
+        #app{
+            display: flex;
+            justify-content: center;
+            margin-top: 100px;
+        }
     </style>
 </head>
 
 <body>
+    <h1>知心姐姐聊天室</h1>
     <div id="app">
         <chatroom></chatroom>
     </div>
