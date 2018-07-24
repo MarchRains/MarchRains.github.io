@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
     <link rel="icon" href="./imgs/Door_Chat_Room_32px_1134450_easyicon.net.ico">
     <title>知心咩咩</title>
     <style>
@@ -126,7 +126,7 @@
                 params.append('info', this.message);
                 // 调用axios的post方法,直接发送之前封装好的数据
                 axios
-                    .post('https://www.tuling123.com/openapi/api', params)
+                    .post('http://www.tuling123.com/openapi/api', params)
                     .then((response) => {
                         console.log(response.data);
                         this.messageList.push({
